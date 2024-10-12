@@ -19,7 +19,6 @@ public class Nurse {
     @JoinColumn(name="userId",referencedColumnName = "userId")
     private User user;
 
-
     @Column
     private  String licenceNo;
 

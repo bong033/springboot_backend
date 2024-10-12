@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/patient")
+@CrossOrigin("*")
 public class PatientController {
     @Autowired
     PatientRepository patientRepository;
@@ -30,6 +31,27 @@ public class PatientController {
     @GetMapping
     public ResponseEntity<Object> allPatients() {
         return new ResponseEntity<>(patientRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Object> getPatientByUserId(@PathVariable Long userId) {
+
+        Optional<Patient> patient = patientRepository.findByUser_UserId(userId);
+
+        if (patient.isEmpty())
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(patient, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getPatientById(@PathVariable Long id) {
+        Optional<Patient> patient = patientRepository.findById(id);
+
+        if (patient.isEmpty())
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
     @PostMapping("/{userId}")
@@ -88,5 +110,6 @@ public class PatientController {
         patient.setNurse(null);
         return new ResponseEntity<>("Nurse removed",HttpStatus.OK);
     };
+
 
 }

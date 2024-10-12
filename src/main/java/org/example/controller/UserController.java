@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.Patient;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -16,6 +20,16 @@ public class UserController {
     @GetMapping
     public ResponseEntity<Object> allUsers(){
         return new ResponseEntity<> (userRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<Object> getUserByEmail(@PathVariable String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        if (user.isEmpty())
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping
