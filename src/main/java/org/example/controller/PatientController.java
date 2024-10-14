@@ -104,12 +104,22 @@ public class PatientController {
         }
         return new ResponseEntity<>(patientRepository.save(updatedPatient), HttpStatus.OK);
     }
+//    @PutMapping({"/{patientId}/remove-nurse"})
+//    public ResponseEntity<Object> updatePatient(@PathVariable Long patientId){
+//        Patient patient = patientRepository.findById(patientId).get();
+//        patient.setNurse(null);
+//        return new ResponseEntity<>("Nurse removed",HttpStatus.OK);
+//    };
+
+    @PostMapping
+    public ResponseEntity<Object> saveUser(@RequestBody Patient patient){
+        return new ResponseEntity<>(patientRepository.save(patient),HttpStatus.OK);
+    }
+
     @PutMapping({"/{patientId}/remove-nurse"})
     public ResponseEntity<Object> updatePatient(@PathVariable Long patientId){
         Patient patient = patientRepository.findById(patientId).get();
         patient.setNurse(null);
-        return new ResponseEntity<>("Nurse removed",HttpStatus.OK);
+        return new ResponseEntity<>(patientRepository.save(patient),HttpStatus.OK);
     };
-
-
 }
