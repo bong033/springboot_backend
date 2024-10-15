@@ -21,7 +21,7 @@ public class Patient {
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "packageId")
     private Package _package;
 
