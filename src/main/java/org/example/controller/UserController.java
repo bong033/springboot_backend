@@ -34,6 +34,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Object> saveUser(@RequestBody User user){
+
         return new ResponseEntity<>(userRepository.save(user),HttpStatus.OK);
     }
 

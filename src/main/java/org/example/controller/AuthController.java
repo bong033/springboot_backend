@@ -2,6 +2,7 @@ package org.example.controller;
 
 import jakarta.validation.Valid;
 import org.example.dto.RequestResponse;
+import org.example.repository.UserRepository;
 import org.example.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,20 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    UserRepository userRepository;
 
     //register for an account
     @PostMapping("/signup")
     public ResponseEntity<RequestResponse> signUp(@Valid @RequestBody RequestResponse signUpRequest){
+        // Check if the user already exists
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            // Return a response indicating that the signup already exist
+            return ResponseEntity.status(HttpStatus.IM_USED)
+                    .body(new RequestResponse());
+        }
+
+        // Proceed with the signup process
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.signUp(signUpRequest));
     }
 
